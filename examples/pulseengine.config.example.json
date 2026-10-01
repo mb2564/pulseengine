@@ -1,0 +1,10 @@
+{
+  "projectDir": ".",
+  "distDir": "dist",
+  "htmlFile": "index.html",
+  "buildCommand": "npm run build",
+  "regressionCommands": [
+    "npm test"
+  ],
+  "boundaries": {}
+}
