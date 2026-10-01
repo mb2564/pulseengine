@@ -1,0 +1,13 @@
+# Local beta downloads
+*.tgz
+*.zip
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local Node artifacts
+node_modules/
+npm-debug.log*
