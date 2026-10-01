@@ -1,0 +1,97 @@
+name: Beta feedback
+description: Share a PulseEngine beta result without exposing proprietary source.
+title: "[Beta feedback] "
+labels: ["beta-feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing PulseEngine. Please do not include proprietary source code, secrets, customer data, or private internal URLs in this public issue.
+
+  - type: input
+    id: version
+    attributes:
+      label: PulseEngine version/build
+      placeholder: 0.3.0-beta.15
+    validations:
+      required: true
+
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome
+      options:
+        - KEEP
+        - REJECT
+        - NO CANDIDATE
+        - UNSUPPORTED
+        - ERROR / could not complete
+    validations:
+      required: true
+
+  - type: dropdown
+    id: setup
+    attributes:
+      label: Could you install/configure it without help?
+      options:
+        - "Yes"
+        - Mostly
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: candidate
+    attributes:
+      label: Candidate and journey assessment
+      description: Describe at a high level. Do not paste proprietary code.
+      placeholder: PulseEngine identified a settings/help panel loaded during initial dashboard load. I agreed / disagreed because...
+    validations:
+      required: true
+
+  - type: input
+    id: delta
+    attributes:
+      label: Measured initial-load change
+      placeholder: e.g. gzip -12.4%, or N/A
+
+  - type: dropdown
+    id: review
+    attributes:
+      label: Was review.md understandable?
+      options:
+        - Very clear
+        - Mostly clear
+        - Mixed
+        - Confusing
+    validations:
+      required: true
+
+  - type: textarea
+    id: missed
+    attributes:
+      label: Did PulseEngine miss or misclassify anything obvious?
+      placeholder: High-level description only.
+
+  - type: dropdown
+    id: keep
+    attributes:
+      label: Would you keep PulseEngine installed in this repository?
+      options:
+        - "Yes"
+        - Maybe
+        - "No"
+    validations:
+      required: true
+
+  - type: textarea
+    id: pay
+    attributes:
+      label: Biggest reason you would or would not adopt/pay for it
+    validations:
+      required: true
+
+  - type: textarea
+    id: friction
+    attributes:
+      label: Setup friction, trust concerns, or other feedback
