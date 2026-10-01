@@ -57,7 +57,7 @@ Download the latest compiled beta asset:
 
 ```bash
 curl -L \
-  https://github.com/mb2564/pulseengine/releases/latest/download/pulseengine-beta.tgz \
+  https://github.com/mb2564/pulseengine/releases/download/v0.3.0-beta.15/pulseengine-beta.tgz \
   -o pulseengine-beta.tgz
 ```
 
