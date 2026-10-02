@@ -57,14 +57,14 @@ Download the latest compiled beta asset:
 
 ```bash
 curl -L \
-  https://github.com/mb2564/pulseengine/releases/download/v0.3.0-beta.16/pulseengine-beta.tgz \
+  https://github.com/mb2564/pulseengine/releases/download/v0.3.0-beta.17/pulseengine-beta.tgz \
   -o pulseengine-beta.tgz
 ```
 
 Then, from your React/Vite repository:
 
 ```bash
-npm install --save-dev ./pulseengine-beta.tgz
+npm install --no-save --package-lock=false ./pulseengine-beta.tgz
 ```
 
 On Windows you can download `pulseengine-beta.tgz` from the latest GitHub Release in your browser and run the same `npm install` command.
