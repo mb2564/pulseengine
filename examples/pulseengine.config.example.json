@@ -2,6 +2,7 @@
   "projectDir": ".",
   "distDir": "dist",
   "htmlFile": "index.html",
+  "installCommand": "npm install --include=dev",
   "buildCommand": "npm run build",
   "regressionCommands": [
     "npm test"
