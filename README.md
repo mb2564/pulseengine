@@ -23,6 +23,7 @@ A useful run can end in **KEEP, REJECT, NO CANDIDATE, or UNSUPPORTED**. The beta
 ## Start here
 
 - [Why PulseEngine?](docs/WHY_PULSEENGINE.md)
+- [Why not just bundle analysis or React.lazy?](docs/WHY_NOT_JUST_BUNDLE_ANALYSIS.md)
 - [Your first test](docs/FIRST_TEST.md)
 - [How it works](docs/HOW_IT_WORKS.md)
 - [Interpreting results](docs/INTERPRETING_RESULTS.md)
