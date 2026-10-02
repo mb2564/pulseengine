@@ -16,6 +16,7 @@ A useful run can end in **KEEP, REJECT, NO CANDIDATE, or UNSUPPORTED**. The beta
 
 **What you get:** a read-only scan, an isolated experiment when supported, your existing build/regression checks, before/after evidence, and a reviewable patch. PulseEngine does not silently modify your working checkout.
 
+- [Beta testers wanted — what kind of repos we need](https://github.com/mb2564/pulseengine/issues/1)
 - [Run your first test](docs/FIRST_TEST.md)
 - [See a real beta.17 validation run](docs/VALIDATION_CASE_STUDY.md)
 - [Open beta feedback](https://github.com/mb2564/pulseengine/issues/new?template=beta-feedback.yml)
@@ -52,6 +53,8 @@ review.md + candidate.patch
 ```
 
 PulseEngine does not silently apply a patch to your working checkout and does not automatically merge a KEEP result.
+
+The scanner can recognize more opportunity shapes than the current beta patcher is willing to rewrite automatically. When a candidate would require an unsafe or unsupported source transformation, the experiment should refuse it rather than force a patch.
 
 ## Current beta scope
 
