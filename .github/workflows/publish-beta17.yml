@@ -1,0 +1,78 @@
+name: Publish PulseEngine beta.17
+
+on:
+  push:
+    branches:
+      - release/beta17-publisher
+    paths:
+      - ".github/workflows/publish-beta17.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download validated release assets
+        env:
+          ASSET_ZIP_URL: "https://sdmntprcentralindia.oaiusercontent.com/files/00000000-2a28-8208-88e8-973ebf1afee1/raw?se=2026-10-02T03%3A55%3A53Z&sp=r&sv=2026-02-06&sr=b&scid=701ba53a-8fd5-5fd4-94fe-32269b3bf9ee&skoid=37f774a3-b6f2-4e56-9fdd-339e5d6e97f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-02T02%3A41%3A19Z&ske=2026-10-03T02%3A41%3A19Z&sks=b&skv=2026-02-06&sig=aNpkjjk4z6/fKZtEGmsml4NdzEJq5AH4q3j0rGYrob0%3D"
+        run: |
+          curl --fail --location --retry 3 "$ASSET_ZIP_URL" -o /tmp/pulseengine-beta17-assets.zip
+          mkdir -p release-assets
+          unzip -q /tmp/pulseengine-beta17-assets.zip -d release-assets
+          find release-assets -maxdepth 2 -type f -print | sort
+          cd release-assets
+          sha256sum -c SHA256SUMS.txt
+
+      - name: Create or update beta.17 prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > /tmp/release-notes.md <<'NOTES'
+          ## PulseEngine 0.3.0-beta.17 — Public Beta
+
+          PulseEngine is a journey-aware performance engineering tool for React + Vite applications.
+
+          This beta hardens isolated experiment setup after a live beta.16 smoke test exposed an untracked-lockfile edge case.
+
+          ### Fixed in beta.17
+
+          - `pulseengine init` now uses a frozen/CI install only when the relevant lockfile is tracked in Git and will therefore exist inside the detached experiment worktree
+          - an untracked local `package-lock.json` no longer causes the candidate worktree to run `npm ci` against a missing lockfile
+          - npm experiment installs still explicitly include development dependencies such as Vite and TypeScript
+          - the recommended beta evaluation install no longer needs to modify `package.json` or create a lockfile before the first experiment
+
+          ### Recommended evaluation install
+
+          ```bash
+          npm install --no-save --package-lock=false ./pulseengine-beta.tgz
+          npx pulseengine version
+          npx pulseengine init --project .
+          ```
+
+          Then:
+
+          ```bash
+          npx pulseengine scan --config pulseengine.config.json
+          npx pulseengine experiment --config pulseengine.config.json
+          ```
+
+          ### Beta note
+
+          A KEEP verdict is evidence for engineering review, not automatic permission to merge.
+
+          The PulseEngine engine remains proprietary. The public repository contains documentation, examples, feedback tooling, and the compiled beta distribution only.
+
+          Critical feedback—including REJECT, NO CANDIDATE, UNSUPPORTED, setup friction, and incorrect candidate detection—is especially useful.
+          NOTES
+
+          if gh release view v0.3.0-beta.17 >/dev/null 2>&1; then
+            gh release edit v0.3.0-beta.17               --title "PulseEngine 0.3.0-beta.17 — Public Beta"               --notes-file /tmp/release-notes.md               --prerelease
+          else
+            gh release create v0.3.0-beta.17               --target main               --title "PulseEngine 0.3.0-beta.17 — Public Beta"               --notes-file /tmp/release-notes.md               --prerelease
+          fi
+
+          gh release upload v0.3.0-beta.17             release-assets/pulseengine-beta.tgz             release-assets/pulseengine-0.3.0-beta.17.tgz             release-assets/SHA256SUMS.txt             --clobber
