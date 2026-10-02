@@ -27,13 +27,13 @@ git status
 Install the current beta package and initialize:
 
 ```bash
-npm install --save-dev ./pulseengine-beta.tgz
+npm install --no-save --package-lock=false ./pulseengine-beta.tgz
 npx pulseengine init --project .
 ```
 
 Open `pulseengine.config.json`.
 
-PulseEngine auto-detects an install command during `init`. For npm projects it uses `npm ci --include=dev` when a lockfile exists, otherwise `npm install --include=dev`, so build tooling such as Vite and TypeScript is available inside the isolated experiment worktree.
+PulseEngine auto-detects an install command during `init`. For npm projects it uses `npm ci --include=dev` only when the lockfile is tracked in Git and therefore available inside the detached experiment worktree; otherwise it uses `npm install --include=dev`. This keeps build tooling such as Vite and TypeScript available without trusting an untracked local lockfile.
 
 Replace placeholder build/regression commands with the commands your project actually uses. If you override `installCommand`, make sure it installs development dependencies required by your build.
 
