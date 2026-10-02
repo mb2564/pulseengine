@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.0-beta.17
+
+Hardens isolated experiment setup after a live public beta.16 smoke test exposed an untracked-lockfile edge case.
+
+### Fixed
+
+- `pulseengine init` now treats a lockfile as suitable for a frozen/CI install only when that lockfile is tracked in Git and will therefore exist in the detached experiment worktree
+- an untracked local `package-lock.json` no longer causes the candidate worktree to run `npm ci` against a missing lockfile
+- the evaluation install path no longer needs to modify `package.json` or create a lockfile before the first experiment
+
+### Recommended beta install
+
+```bash
+npm install --no-save --package-lock=false ./pulseengine-beta.tgz
+```
+
 ## 0.3.0-beta.16
 
 Public beta hardening after an external-style Dailune install/experiment smoke test.
