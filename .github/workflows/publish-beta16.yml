@@ -1,0 +1,79 @@
+name: Publish PulseEngine beta.16
+
+on:
+  push:
+    branches:
+      - release/beta16-publisher
+    paths:
+      - ".github/workflows/publish-beta16.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download validated release assets
+        env:
+          ASSET_ZIP_URL: "https://sdmntprcentralindia.oaiusercontent.com/files/00000000-0b60-8208-87d8-347ec214cdda/raw?se=2026-10-02T03%3A48%3A58Z&sp=r&sv=2026-02-06&sr=b&scid=bdb7df0b-1dec-5091-a107-22aaa1bf7dc0&skoid=37f774a3-b6f2-4e56-9fdd-339e5d6e97f8&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-10-02T02%3A32%3A16Z&ske=2026-10-03T02%3A32%3A16Z&sks=b&skv=2026-02-06&sig=GYSCVPvzlzoWO6XRTNyuePbbE1r/OcvjFuASSn5K6Ao%3D"
+        run: |
+          curl --fail --location --retry 3 "$ASSET_ZIP_URL" -o /tmp/pulseengine-beta16-assets.zip
+          mkdir -p release-assets
+          unzip -q /tmp/pulseengine-beta16-assets.zip -d release-assets
+          find release-assets -maxdepth 2 -type f -print | sort
+          cd release-assets
+          sha256sum -c SHA256SUMS.txt
+
+      - name: Create or update beta.16 prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cat > /tmp/release-notes.md <<'NOTES'
+          ## PulseEngine 0.3.0-beta.16 — Public Beta
+
+          PulseEngine is a journey-aware performance engineering tool for React + Vite applications.
+
+          This beta improves the isolated experiment workflow after testing the public package against a real React + Vite repository.
+
+          ### Fixed in beta.16
+
+          - automatically detects npm lockfile state during `pulseengine init`
+          - uses `npm ci --include=dev` when a lockfile is present
+          - uses `npm install --include=dev` when no npm lockfile exists
+          - ensures build-time development dependencies such as Vite and TypeScript are available inside isolated experiment worktrees
+          - improves public-beta onboarding for repositories without a package lockfile
+          - fixes prerelease download guidance to use a versioned GitHub Release asset
+
+          ### Validated
+
+          - public beta package installation
+          - `pulseengine version`
+          - `pulseengine init`
+          - read-only `pulseengine scan`
+          - candidate discovery
+          - detached Git worktree experiment
+          - production build
+          - regression tests
+          - before/after measurement
+          - review artifact generation
+          - final KEEP/REJECT decision flow
+
+          ### Beta note
+
+          This is evaluation software. A KEEP verdict is evidence for engineering review, not automatic permission to merge.
+
+          The PulseEngine engine remains proprietary. The public repository contains documentation, examples, feedback tooling, and the compiled beta distribution only.
+
+          Critical feedback—including REJECT, NO CANDIDATE, UNSUPPORTED, setup friction, and incorrect candidate detection—is especially useful.
+          NOTES
+
+          if gh release view v0.3.0-beta.16 >/dev/null 2>&1; then
+            gh release edit v0.3.0-beta.16               --title "PulseEngine 0.3.0-beta.16 — Public Beta"               --notes-file /tmp/release-notes.md               --prerelease
+          else
+            gh release create v0.3.0-beta.16               --target main               --title "PulseEngine 0.3.0-beta.16 — Public Beta"               --notes-file /tmp/release-notes.md               --prerelease
+          fi
+
+          gh release upload v0.3.0-beta.16             release-assets/pulseengine-beta.tgz             release-assets/pulseengine-0.3.0-beta.16.tgz             release-assets/SHA256SUMS.txt             --clobber
