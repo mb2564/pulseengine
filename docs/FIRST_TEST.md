@@ -66,9 +66,15 @@ npx pulseengine experiment --config pulseengine.config.json
 
 ## Read the result in this order
 
-1. `.pulseengine/review.md`
-2. `.pulseengine/review-summary.json`
-3. `.pulseengine/candidate.patch`
+PulseEngine prints the experiment output directory when the run finishes. Artifacts are written under:
+
+`.pulseengine/experiments/<timestamp>/`
+
+Read:
+
+1. `review.md`
+2. `review-summary.json`
+3. `candidate.patch`
 
 Do not start by reading internal raw evidence files.
 
