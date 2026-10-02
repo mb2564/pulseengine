@@ -6,6 +6,20 @@ PulseEngine looks for code that users are paying to download **before the user j
 
 > Public beta. The PulseEngine engine is proprietary and is distributed as a compiled evaluation package. This repository intentionally does **not** contain the engine source code.
 
+## Try PulseEngine on one real repository
+
+If you maintain a React + Vite application with multiple screens, dialogs, drawers, settings areas, admin tools, or other later user journeys, we want to know whether PulseEngine can find a boundary that is genuinely worth testing.
+
+A useful run can end in **KEEP, REJECT, NO CANDIDATE, or UNSUPPORTED**. The beta is explicitly designed to avoid inventing an optimization just to produce a positive result.
+
+**What we ask from a tester:** one real repository session, then a short public feedback issue with no proprietary code.
+
+**What you get:** a read-only scan, an isolated experiment when supported, your existing build/regression checks, before/after evidence, and a reviewable patch. PulseEngine does not silently modify your working checkout.
+
+- [Run your first test](docs/FIRST_TEST.md)
+- [See a real beta.17 validation run](docs/VALIDATION_CASE_STUDY.md)
+- [Open beta feedback](https://github.com/mb2564/pulseengine/issues/new?template=beta-feedback.yml)
+
 ## Start here
 
 - [Why PulseEngine?](docs/WHY_PULSEENGINE.md)
@@ -95,13 +109,15 @@ npx pulseengine experiment --config pulseengine.config.json
 
 PulseEngine creates a detached Git worktree, applies the candidate there, runs configured checks, re-measures the candidate, optionally runs configured browser journeys, emits an exact patch, removes the worktree by default, and verifies the original checkout was not changed.
 
-Start with:
+PulseEngine prints the experiment output directory when the run completes. Review artifacts are stored under a timestamped directory:
 
 ```text
-.pulseengine/review.md
-.pulseengine/review-summary.json
-.pulseengine/candidate.patch
+.pulseengine/experiments/<timestamp>/review.md
+.pulseengine/experiments/<timestamp>/review-summary.json
+.pulseengine/experiments/<timestamp>/candidate.patch
 ```
+
+Start with `review.md`, then `review-summary.json`, then the patch.
 
 ## Optional GitHub PR review
 
